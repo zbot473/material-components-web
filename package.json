@@ -42,7 +42,7 @@
     "test:site": "npm run clean:site && ./scripts/site-generator-test.sh"
   },
   "devDependencies": {
-    "@google-cloud/datastore": "^3.0.1",
+    "@google-cloud/datastore": "^3.1.1",
     "@octokit/rest": "^16.1.0",
     "argparse": "^1.0.10",
     "ascii-table": "0.0.9",
