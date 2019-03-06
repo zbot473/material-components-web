@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@babel/parser": "^7.2.3",
-    "@google-cloud/datastore": "^3.0.1",
+    "@google-cloud/datastore": "^3.1.2",
     "@octokit/rest": "^16.15.0",
     "argparse": "^1.0.10",
     "ascii-table": "0.0.9",
