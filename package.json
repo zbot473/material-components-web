@@ -43,7 +43,7 @@
     "test:site": "npm run clean:site && ./scripts/site-generator-test.sh"
   },
   "devDependencies": {
-    "@babel/parser": "^7.2.3",
+    "@babel/parser": "^7.4.0",
     "@babel/traverse": "^7.3.4",
     "@babel/types": "^7.3.4",
     "@google-cloud/datastore": "^3.0.1",
