@@ -141,7 +141,7 @@
     "useragent": "^2.3.0",
     "verror": "^1.10.0",
     "webpack": "^4.34.0",
-    "webpack-cli": "^3.3.4",
+    "webpack-cli": "^3.3.7",
     "vhtml": "^2.1.0"
   },
   "babel": {
