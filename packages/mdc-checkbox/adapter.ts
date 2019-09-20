@@ -35,6 +35,7 @@ export interface MDCCheckboxAdapter {
   isAttachedToDOM(): boolean;
   isChecked(): boolean;
   isIndeterminate(): boolean;
+  notifyChangeIndeterminateIE(): void;
   removeClass(className: string): void;
   removeNativeControlAttr(attr: string): void;
   setNativeControlAttr(attr: string, value: string): void;

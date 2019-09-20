@@ -92,7 +92,7 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
   initialSyncWithDOM() {
     this.handleChange_ = () => this.foundation_.handleChange();
     this.handleAnimationEnd_ = () => this.foundation_.handleAnimationEnd();
-    this.nativeControl_.addEventListener('change', this.handleChange_);
+    this.nativeControl_.addEventListener('click', this.handleChange_);
     this.listen(getCorrectEventName(window, 'animationend'), this.handleAnimationEnd_);
     this.installPropertyChangeHooks_();
   }
@@ -115,6 +115,18 @@ export class MDCCheckbox extends MDCComponent<MDCCheckboxFoundation> implements 
       isAttachedToDOM: () => Boolean(this.root_.parentNode),
       isChecked: () => this.checked,
       isIndeterminate: () => this.indeterminate,
+      notifyChangeIndeterminateIE: () => {
+        // To compensate for IE's behavior of not emitting events when checkbox
+        // is changed from/to indeterminate and ensure consistency across all
+        // browsers, emit a custom change event if IE is detected as the browser
+        // only IE has document.documentMode property
+        const {documentMode} = document as Document & {documentMode: number};
+        if (!!documentMode) {
+          const changeEvent = document.createEvent('CustomEvent');
+          changeEvent.initCustomEvent('change', false, false, {});
+          this.nativeControl_.dispatchEvent(changeEvent);
+        }
+      },
       removeClass: (className) => this.root_.classList.remove(className),
       removeNativeControlAttr: (attr) => this.nativeControl_.removeAttribute(attr),
       setNativeControlAttr: (attr, value) => this.nativeControl_.setAttribute(attr, value),

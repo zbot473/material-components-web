@@ -46,6 +46,7 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
       isAttachedToDOM: () => false,
       isChecked: () => false,
       isIndeterminate: () => false,
+      notifyChangeIndeterminateIE: () => undefined,
       removeClass: () => undefined,
       removeNativeControlAttr: () => undefined,
       setNativeControlAttr: () => undefined,
@@ -117,12 +118,16 @@ export class MDCCheckboxFoundation extends MDCFoundation<MDCCheckboxAdapter> {
 
     this.updateAriaChecked_();
 
-    const {TRANSITION_STATE_UNCHECKED} = strings;
+    const {TRANSITION_STATE_UNCHECKED, TRANSITION_STATE_INDETERMINATE} = strings;
     const {SELECTED} = cssClasses;
     if (newState === TRANSITION_STATE_UNCHECKED) {
       this.adapter_.removeClass(SELECTED);
     } else {
       this.adapter_.addClass(SELECTED);
+    }
+
+    if (oldState === TRANSITION_STATE_INDETERMINATE || newState === TRANSITION_STATE_INDETERMINATE) {
+      this.adapter_.notifyChangeIndeterminateIE();
     }
 
     // Check to ensure that there isn't a previously existing animation class, in case for example

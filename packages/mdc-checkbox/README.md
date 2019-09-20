@@ -199,7 +199,7 @@ Method Signature | Description
 `setNativeControlDisabled(disabled: boolean) => void` | Sets the input to disabled.
 `setNativeControlAttr(attr: string, value: string) => void` | Sets an HTML attribute to the given value on the native input element.
 `removeNativeControlAttr(attr: string) => void` | Removes an attribute from the native input element.
-
+`notifyChangeIndeterminateIE() => void` | If the browser is detected to be IE, emits a custom change event originating from the checkbox input when state switches to/from indeterminate, to compensate for IE's lack of such notification
 ### `MDCCheckboxFoundation`
 
 Method Signature | Description

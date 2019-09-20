@@ -143,10 +143,10 @@ test('get ripple returns a MDCRipple instance', () => {
   assert.isOk(component.ripple instanceof MDCRipple);
 });
 
-test('checkbox change event calls #foundation.handleChange', () => {
+test('checkbox click event calls #foundation.handleChange', () => {
   const {cb, component} = setupTest();
   component.foundation_.handleChange = td.func();
-  domEvents.emit(cb, 'change');
+  domEvents.emit(cb, 'click');
   td.verify(component.foundation_.handleChange(), {times: 1});
 });
 

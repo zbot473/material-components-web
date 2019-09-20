@@ -114,7 +114,8 @@ test('exports numbers', () => {
 test('defaultAdapter returns a complete adapter implementation', () => {
   verifyDefaultAdapter(MDCCheckboxFoundation, [
     'addClass', 'removeClass', 'setNativeControlAttr', 'removeNativeControlAttr',
-    'forceLayout', 'isAttachedToDOM', 'isIndeterminate', 'isChecked', 'hasNativeControl', 'setNativeControlDisabled',
+    'forceLayout', 'isAttachedToDOM', 'isIndeterminate', 'isChecked',
+    'notifyChangeIndeterminateIE', 'hasNativeControl', 'setNativeControlDisabled',
   ]);
 });
 
