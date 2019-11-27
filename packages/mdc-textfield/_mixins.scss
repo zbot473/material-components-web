@@ -351,6 +351,46 @@
   }
 }
 
+///
+/// Customizes the color of the prefix text for an enabled text field.
+/// @param {Color} $color - The desired prefix text color.
+///
+@mixin mdc-text-field-prefix-color($color) {
+  @include mdc-text-field-if-enabled_ {
+    @include mdc-text-field-prefix-color_($color);
+  }
+}
+
+///
+/// Customizes the color of the prefix text for a disabled text field.
+/// @param {Color} $color - The desired prefix text color.
+///
+@mixin mdc-text-field-disabled-prefix-color($color) {
+  @include mdc-text-field-if-disabled_ {
+    @include mdc-text-field-prefix-color_($color);
+  }
+}
+
+///
+/// Customizes the color of the suffix text for an enabled text field.
+/// @param {Color} $color - The desired suffix text color.
+///
+@mixin mdc-text-field-suffix-color($color) {
+  @include mdc-text-field-if-enabled_ {
+    @include mdc-text-field-suffix-color_($color);
+  }
+}
+
+///
+/// Customizes the color of the suffix text for a disabled text field.
+/// @param {Color} $color - The desired suffix text color.
+///
+@mixin mdc-text-field-disabled-suffix-color($color) {
+  @include mdc-text-field-if-disabled_ {
+    @include mdc-text-field-suffix-color_($color);
+  }
+}
+
 // Private mixins
 
 // Baseline
@@ -363,8 +403,9 @@
   @include mdc-text-field-character-counter-color_($mdc-text-field-disabled-helper-text-color);
   @include mdc-text-field-icon-color_($mdc-text-field-disabled-icon);
   @include mdc-text-field-fill-color_($mdc-text-field-disabled-background);
+  @include mdc-text-field-prefix-color_($mdc-text-field-disabled-helper-text-color);
+  @include mdc-text-field-suffix-color_($mdc-text-field-disabled-helper-text-color);
 
-  border-bottom: none;
   pointer-events: none;
 
   .mdc-floating-label {
@@ -573,7 +614,10 @@
 
   .mdc-text-field__input {
     display: flex;
-    padding: 12px 16px 14px;
+    padding:
+      $mdc-text-field-outlined-padding-top
+      $mdc-text-field-input-padding
+      $mdc-text-field-outlined-padding-bottom;
     border: none !important; // FF adds unwanted border in HC mode on windows.
     background-color: transparent;
     z-index: 1;
@@ -716,6 +760,111 @@
   );
 }
 
+// Prefix and suffix
+
+@mixin mdc-text-field-with-prefix_ {
+  @include mdc-text-field-affix_;
+
+  .mdc-text-field__input {
+    @include mdc-rtl-reflexive-property(padding, 0, $mdc-text-field-input-padding);
+  }
+}
+
+@mixin mdc-text-field-with-suffix_ {
+  @include mdc-text-field-affix_;
+
+  .mdc-text-field__input {
+    @include mdc-rtl-reflexive-property(padding, $mdc-text-field-input-padding, 0);
+  }
+}
+
+@mixin mdc-text-field-with-prefix-and-suffix_ {
+  .mdc-text-field__input {
+    padding-right: 0;
+    padding-left: 0;
+  }
+}
+
+@mixin mdc-text-field-affix_ {
+  .mdc-text-field__prefix,
+  .mdc-text-field__suffix {
+    @include mdc-typography(subtitle1, $exclude-props: (line-height));
+
+    display: inline-flex;
+    align-items: center;
+    padding-top: $mdc-text-field-input-padding-top;
+    padding-bottom: $mdc-text-field-input-padding-bottom;
+    transition: mdc-text-field-transition(opacity);
+    opacity: 0;
+    will-change: opacity;
+  }
+
+  .mdc-text-field__prefix {
+    @include mdc-rtl-reflexive-property(
+      padding,
+      $mdc-text-field-input-padding,
+      $mdc-text-field-affix-aligned-padding
+    );
+  }
+
+  .mdc-text-field__suffix {
+    @include mdc-rtl-reflexive-property(
+      padding,
+      $mdc-text-field-affix-padding,
+      $mdc-text-field-input-padding
+    );
+  }
+
+  &.mdc-text-field--no-label {
+    .mdc-text-field__prefix,
+    .mdc-text-field__suffix {
+      padding-top: $mdc-text-field-input-padding;
+      padding-bottom: $mdc-text-field-input-padding;
+    }
+  }
+
+  &.mdc-text-field--outlined {
+    .mdc-text-field__prefix,
+    .mdc-text-field__suffix {
+      padding-top: $mdc-text-field-outlined-padding-top;
+      padding-bottom: $mdc-text-field-outlined-padding-bottom;
+    }
+  }
+
+  &.mdc-text-field--no-label,
+  &.mdc-text-field--label-floating {
+    .mdc-text-field__prefix,
+    .mdc-text-field__suffix {
+      opacity: 1;
+    }
+  }
+}
+
+// End aligned
+@mixin mdc-text-field-end-aligned_ {
+  &.mdc-text-field--end-aligned {
+    .mdc-text-field__input {
+      text-align: end;
+    }
+
+    .mdc-text-field__prefix {
+      @include mdc-rtl-reflexive-property(
+        padding,
+        $mdc-text-field-input-padding,
+        $mdc-text-field-affix-padding
+      );
+    }
+
+    .mdc-text-field__suffix {
+      @include mdc-rtl-reflexive-property(
+        padding,
+        $mdc-text-field-affix-aligned-padding,
+        $mdc-text-field-input-padding
+      );
+    }
+  }
+}
+
 // Full Width
 @mixin mdc-text-field-fullwidth_ {
   @include mdc-text-field-bottom-line-color($mdc-text-field-bottom-line-idle);
@@ -821,13 +970,11 @@
 }
 
 @mixin mdc-text-field-bottom-line-color_($color) {
-  .mdc-text-field__input {
-    @include mdc-theme-prop(border-bottom-color, $color);
-  }
+  @include mdc-theme-prop(border-bottom-color, $color);
 }
 
 @mixin mdc-text-field-hover-bottom-line-color_($color) {
-  .mdc-text-field__input:hover {
+  &:hover {
     @include mdc-theme-prop(border-bottom-color, $color);
   }
 }
@@ -841,6 +988,18 @@
 @mixin mdc-text-field-label-ink-color_($color) {
   .mdc-floating-label {
     @include mdc-floating-label-ink-color($color);
+  }
+}
+
+@mixin mdc-text-field-prefix-color_($color) {
+  .mdc-text-field__prefix {
+    @include mdc-theme-prop(color, $color);
+  }
+}
+
+@mixin mdc-text-field-suffix-color_($color) {
+  .mdc-text-field__suffix {
+    @include mdc-theme-prop(color, $color);
   }
 }
 

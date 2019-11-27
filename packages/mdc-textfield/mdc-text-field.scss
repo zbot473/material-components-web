@@ -64,6 +64,8 @@
   @include mdc-text-field-character-counter-color($mdc-text-field-helper-text-color);
   @include mdc-text-field-icon-color($mdc-text-field-icon-color);
   @include mdc-text-field-fill-color($mdc-text-field-background);
+  @include mdc-text-field-prefix-color($mdc-text-field-helper-text-color);
+  @include mdc-text-field-suffix-color($mdc-text-field-helper-text-color);
 
   // Floating Label
   @include mdc-text-field-floating-label_;
@@ -71,9 +73,24 @@
   display: inline-flex;
   position: relative;
   box-sizing: border-box;
-  overflow: hidden;
+  overflow: visible; // TODO(lizmitchell): needed for line ripple workaround
   /* @alternate */
   will-change: opacity, transform, color;
+
+  // Filled Text Field bottom line
+  border-bottom: 1px solid;
+  // @include mdc-text-field-if-enabled_ {
+  //   &:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) {
+  //     border-bottom-width: 1px;
+  //     border-bottom-style: solid;
+  //   }
+  // }
+}
+
+.mdc-line-ripple {
+  // TODO(lizmitchell): potentially find a better way to handle the ripple not
+  // stacking on top of the host element's new border
+  bottom: -1px;
 }
 
 .mdc-text-field__input {
@@ -90,7 +107,6 @@
     $mdc-text-field-input-padding-bottom;
   transition: mdc-text-field-transition(opacity);
   border: none;
-  border-bottom: 1px solid;
   border-radius: 0;
   background: none;
   appearance: none;
@@ -199,6 +215,18 @@
   @include mdc-text-field-dense-with-both-icons_;
 }
 
+.mdc-text-field--with-prefix {
+  @include mdc-text-field-with-prefix_;
+}
+
+.mdc-text-field--with-suffix {
+  @include mdc-text-field-with-suffix_;
+}
+
+.mdc-text-field--with-prefix.mdc-text-field--with-suffix {
+  @include mdc-text-field-with-prefix-and-suffix_;
+}
+
 .mdc-text-field--dense {
   @include mdc-text-field-dense_;
 }
@@ -268,6 +296,10 @@
 
 .mdc-text-field--textarea.mdc-text-field--disabled {
   @include mdc-text-field-textarea-disabled_;
+}
+
+.mdc-text-field--end-aligned {
+  @include mdc-text-field-end-aligned_;
 }
 
 @include mdc-floating-label-shake-keyframes(
